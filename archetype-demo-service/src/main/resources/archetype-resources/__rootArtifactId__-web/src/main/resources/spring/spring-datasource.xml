@@ -1,0 +1,43 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+<bean id="commonDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${symbol_dollar}{datasource.url}"/>
+        <property name="username" value="${symbol_dollar}{datasource.username}"/>
+        <property name="password" value="${symbol_dollar}{datasource.password}"/>
+        <property name="maxActive" value="20"/>
+        <property name="maxIdle" value="20"/>
+        <property name="minIdle" value="5"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxWait" value="15000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="180000"/>
+    </bean>
+
+    <bean id="commonSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="commonDataSource"/>
+        <property name="typeAliasesPackage" value="${groupId}.entity"/>
+        <property name="configLocation" value="classpath:spring/mybatis-config.xml"/>
+    </bean>
+
+    <bean id="commonMapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="commonSqlSessionFactory"/>
+        <property name="basePackage" value="${groupId}.dao"/>
+    </bean>
+
+    <tx:annotation-driven/>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="commonDataSource"></property>
+        <property name="defaultTimeout" value="3"/>
+        <qualifier value="common"/>
+    </bean>
+</beans>
