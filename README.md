@@ -21,10 +21,13 @@
 - rpc ： 外部依赖模块，用于请求外部服务
 - business ： 业务模块，依赖dao模块和rpc模块
 - web : web模块，依赖business模块
-    - resources.props : 属性文件目录，多环境文件配置
-    - resources.spring : spring相关配置
-    - spring-config.xml : spring初始化入口
-    - webapp : 放置前端相关文件以及web.xml配置
+    - src/main/java
+    - src/main/resources
+        - props : 属性文件目录，多环境文件配置
+        - spring : spring相关配置
+        - spring-config.xml : spring初始化入口
+    - src/main/webapp : 放置前端相关文件以及web.xml配置
+
 
 ##### IntelliJ IDEA使用教程
 ###### 安装插件
